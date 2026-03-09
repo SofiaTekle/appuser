@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sv"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="jakarta.faces.core"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <h:head>
+        <title>AppUser</title>
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.jsdelivr.net/npm/primefaces@12.0.0/resources/themes/saga/theme.css"/>
+        <link rel="stylesheet" type="text/css"
+              href="https://cdn.jsdelivr.net/npm/primefaces@12.0.0/resources/primeicons/primeicons.css"/>
+    </h:head>
+    <h:body style="padding: 2rem; display: flex; flex-direction: column; align-items: center;">
+        <p:panel header="Lägg till användare" style="width: 400px">
+            <h:form>
+                <p:outputLabel for="username" value="Användarnamn"/>
+                <p:inputText id="username" value="#{appUserBean.username}" style="width:100%"/>
+
+                <br/><br/>
+
+                <p:outputLabel for="password" value="Lösenord"/>
+                <p:password id="password" value="#{appUserBean.password}" style="width:100%"/>
+
+                <br/><br/>
+
+                <p:commandButton value="Spara"
+                                 action="#{appUserBean.saveUser()}"
+                                 icon="pi pi-save"
+                                 style="width:100%"
+                                 update="@form :userTable"/>
+            </h:form>
+        </p:panel>
+
+        <br/>
+
+        <p:dataTable id="userTable" value="#{appUserBean.users}" var="user" style="width: 400px">
+            <p:column headerText="Id" style="width:80px">
+                #{user.id}
+            </p:column>
+            <p:column headerText="Namn">
+                #{user.username}
+            </p:column>
+        </p:dataTable>
+    </h:body>
+</f:view>
+</html>

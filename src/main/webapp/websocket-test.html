@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test WebSocker</title>
+</head>
+<body>
+<script>
+    // Ansluter till Håkans server på render.com
+    const socket = new WebSocket("wss://chat-server-latest-yg0d.onrender.com/chatserver/chat")
+
+    socket.onopen = () => {
+        alert("Connected to Håkans server!");
+        console.log("Connected");
+    };
+
+    socket.onerror = (e) => console.log("Error", e);
+
+    socket.onclose = (e) => console.log("Closed", e);
+
+</script>
+
+</body>
+</html>
