@@ -11,47 +11,7 @@
               href="https://cdn.jsdelivr.net/npm/primefaces@12.0.0/resources/themes/saga/theme.css"/>
         <link rel="stylesheet" type="text/css"
               href="https://cdn.jsdelivr.net/npm/primefaces@12.0.0/resources/primeicons/primeicons.css"/>
-        <script>
 
-            // Min server
-            const socket = new WebSocket("ws://localhost:8080/websocket-server/ws/chat");
-
-            // Håkans server på render.com
-            // const socket = new WebSocket("wss://chat-server-latest-yg0d.onrender.com/chatserver/chat");
-
-            socket.onopen = () => console.log("Connected");
-            socket.onerror = (e) => console.log("Error", e);
-            socket.onclose = (e) => console.log("Closed", e);
-
-
-            // Triggas när anslutningen är uppe
-            socket.addEventListener("open", () => {
-                document.getElementById("status").textContent = "CONNECTED";
-            });
-
-            // Triggas när ett meddelande tas emot - visa i loggen
-            socket.addEventListener("message", (event) => {
-                const log = document.getElementById("log");
-                log.textContent += event.data + "\n";
-            });
-
-            // Triggas när anslutningen stängs
-            socket.addEventListener("close", () => {
-                document.getElementById("status").textContent = "DISCONNECTED";
-            });
-
-            // Triggas vid fel
-            socket.addEventListener("error", () => {
-                document.getElementById("status").textContent = "ERROR";
-            });
-
-            function sendMessage() {
-                const input = document.getElementById("chatForm:messageInput");
-                if (!input.value) return;
-                socket.send(input.value);
-                input.value = "";
-            }
-        </script>
 
     </h:head>
     <h:body style="padding: 2rem ; display: flex; flex-direction: column; align-items: center;">
@@ -81,6 +41,53 @@
             </h:form>
 
         </p:panel>
+
+        <script>
+            const statusEl = document.getElementById("status");
+            const logEl = document.getElementById("log");
+
+            // Min server
+            const socket = new WebSocket("ws://localhost:8080/websocket-server/ws/chat");
+
+            // Håkans server på render.com
+            // const socket = new WebSocket("wss://chat-server-latest-yg0d.onrender.com/chatserver/chat");
+
+            socket.onopen = () => console.log("Connected");
+            socket.onerror = (e) => console.log("Error", e);
+            socket.onclose = (e) => console.log("Closed", e);
+
+            // Triggas när anslutningen är uppe
+            socket.addEventListener("open", () => {
+                statusEl.textContent = "CONNECTED";
+                logEl.textContent += "Connected\n";
+            });
+
+            // Triggas när ett meddelande tas emot - visa i loggen
+            socket.addEventListener("message", (event) => {
+                logEl.textContent += event.data + "\n";
+            });
+
+            // Triggas när anslutningen stängs
+            socket.addEventListener("close", () => {
+                statusEl.textContent = "DISCONNECTED";
+                logEl.textContent += "Disconnected\n";
+            });
+
+            // Triggas vid fel
+            socket.addEventListener("error", () => {
+                statusEl.textContent = "ERROR";
+                logEl.textContent += "Error occurred\n";
+            });
+
+            function sendMessage() {
+                const input = document.getElementById("chatForm:messageInput");
+                if (!input.value) return;
+                socket.send(input.value);
+                input.value = "";
+            }
+        </script>
+
+
     </h:body>
 </f:view>
 </html>
